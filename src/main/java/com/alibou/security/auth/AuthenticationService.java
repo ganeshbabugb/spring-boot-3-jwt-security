@@ -4,7 +4,6 @@ import com.alibou.security.config.JwtService;
 import com.alibou.security.token.Token;
 import com.alibou.security.token.TokenRepository;
 import com.alibou.security.token.TokenType;
-import com.alibou.security.user.Role;
 import com.alibou.security.user.User;
 import com.alibou.security.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

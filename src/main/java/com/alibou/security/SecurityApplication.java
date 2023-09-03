@@ -2,7 +2,6 @@ package com.alibou.security;
 
 import com.alibou.security.auth.AuthenticationService;
 import com.alibou.security.auth.RegisterRequest;
-import com.alibou.security.user.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
