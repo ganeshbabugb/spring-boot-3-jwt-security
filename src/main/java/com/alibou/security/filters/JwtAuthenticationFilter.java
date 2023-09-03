@@ -1,6 +1,7 @@
-package com.alibou.security.config;
+package com.alibou.security.filters;
 
-import com.alibou.security.token.TokenRepository;
+import com.alibou.security.service.JwtService;
+import com.alibou.security.repo.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

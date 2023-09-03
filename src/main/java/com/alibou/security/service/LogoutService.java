@@ -1,6 +1,6 @@
-package com.alibou.security.config;
+package com.alibou.security.service;
 
-import com.alibou.security.token.TokenRepository;
+import com.alibou.security.repo.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,14 +1,14 @@
 package com.alibou.security;
 
-import com.alibou.security.auth.AuthenticationService;
-import com.alibou.security.auth.RegisterRequest;
+import com.alibou.security.service.AuthenticationService;
+import com.alibou.security.payload.request.RegisterRequest;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import static com.alibou.security.user.Role.ADMIN;
-import static com.alibou.security.user.Role.MANAGER;
+import static com.alibou.security.models.user.Role.ADMIN;
+import static com.alibou.security.models.user.Role.MANAGER;
 
 @SpringBootApplication
 public class SecurityApplication {

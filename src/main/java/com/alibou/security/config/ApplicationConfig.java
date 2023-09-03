@@ -1,6 +1,6 @@
 package com.alibou.security.config;
 
-import com.alibou.security.user.UserRepository;
+import com.alibou.security.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
