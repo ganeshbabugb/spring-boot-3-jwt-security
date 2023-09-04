@@ -2,6 +2,8 @@ package com.ganesh.security.models.user;
 
 import com.ganesh.security.models.token.Token;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +25,21 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotBlank
+    @Size(max = 20)
     private String firstname;
+
+    @NotBlank
+    @Size(max = 20)
     private String lastname;
+
+    @Column(unique = true)
+    @NotBlank
+    @Size(max = 50)
     private String email;
+
+    @NotBlank
     private String password;
 
     @Enumerated(EnumType.STRING)
