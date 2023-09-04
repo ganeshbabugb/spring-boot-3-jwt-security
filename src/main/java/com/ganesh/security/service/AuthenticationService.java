@@ -1,6 +1,7 @@
 package com.ganesh.security.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ganesh.security.exceptions.DuplicateEmailException;
 import com.ganesh.security.models.token.Token;
 import com.ganesh.security.models.token.TokenType;
 import com.ganesh.security.models.user.User;
@@ -30,6 +31,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        if (repository.findByEmail(request.getEmail()).isPresent())
+            throw new DuplicateEmailException("Email already exists");
+
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
