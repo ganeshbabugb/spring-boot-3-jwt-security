@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,22 +28,36 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(
+            @Valid @RequestBody RegisterRequest request,
+            BindingResult bindingResult
+    ) {
         try {
+            if (bindingResult.hasErrors()) return service.handleValidationErrors(bindingResult);
             AuthenticationResponse response = service.register(request);
             return ResponseEntity.ok(response);
         } catch (DuplicateEmailException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new MessageResponse(ex.getMessage()));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("An error occurred on the server"));
         }
     }
 
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @Valid @RequestBody AuthenticationRequest request
+    public ResponseEntity<?> authenticate(
+            @Valid @RequestBody AuthenticationRequest request,
+            BindingResult bindingResult
     ) {
-        return ResponseEntity.ok(service.authenticate(request));
+        try {
+            if (bindingResult.hasErrors()) return service.handleValidationErrors(bindingResult);
+            return ResponseEntity.ok(service.authenticate(request));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("An error occurred on the server"));
+        }
     }
 
     @PostMapping("/refresh-token")

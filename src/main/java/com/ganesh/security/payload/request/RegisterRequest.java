@@ -28,6 +28,7 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank
+    @Size(min = 3, max = 20)
     private String password;
 
     private Role role;

@@ -14,12 +14,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +55,15 @@ public class AuthenticationService {
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public ResponseEntity<?> handleValidationErrors(BindingResult bindingResult) {
+        Map<String, String> errorMap = new HashMap<>();
+
+        for (FieldError fieldError : bindingResult.getFieldErrors())
+            errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+
+        return ResponseEntity.badRequest().body(errorMap);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
