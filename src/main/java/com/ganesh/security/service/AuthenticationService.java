@@ -2,6 +2,7 @@ package com.ganesh.security.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ganesh.security.exceptions.DuplicateEmailException;
+import com.ganesh.security.exceptions.UserNotFoundException;
 import com.ganesh.security.models.token.Token;
 import com.ganesh.security.models.token.TokenType;
 import com.ganesh.security.models.user.User;
@@ -67,14 +68,17 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User Not Found!"));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);

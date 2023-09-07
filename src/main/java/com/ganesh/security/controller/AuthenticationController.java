@@ -1,6 +1,7 @@
 package com.ganesh.security.controller;
 
 import com.ganesh.security.exceptions.DuplicateEmailException;
+import com.ganesh.security.exceptions.UserNotFoundException;
 import com.ganesh.security.payload.request.AuthenticationRequest;
 import com.ganesh.security.payload.request.RegisterRequest;
 import com.ganesh.security.payload.response.AuthenticationResponse;
@@ -54,6 +55,9 @@ public class AuthenticationController {
         try {
             if (bindingResult.hasErrors()) return service.handleValidationErrors(bindingResult);
             return ResponseEntity.ok(service.authenticate(request));
+        } catch (UserNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new MessageResponse(ex.getMessage()));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new MessageResponse("An error occurred on the server"));
