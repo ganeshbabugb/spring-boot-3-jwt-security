@@ -1,4 +1,4 @@
-package com.ganesh.security.repo;
+package com.ganesh.security.repositorys;
 
 import com.ganesh.security.models.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;

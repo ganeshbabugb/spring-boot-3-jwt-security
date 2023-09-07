@@ -1,6 +1,6 @@
 package com.ganesh.security.filters;
 
-import com.ganesh.security.repo.TokenRepository;
+import com.ganesh.security.repositorys.TokenRepository;
 import com.ganesh.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

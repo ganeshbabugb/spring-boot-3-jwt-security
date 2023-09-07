@@ -1,6 +1,6 @@
 package com.ganesh.security.config;
 
-import com.ganesh.security.repo.UserRepository;
+import com.ganesh.security.repositorys.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

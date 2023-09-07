@@ -1,7 +1,7 @@
 package com.ganesh.security.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ganesh.security.exceptions.DuplicateEmailException;
+import com.ganesh.security.exceptions.UserAlreadyExistsException;
 import com.ganesh.security.exceptions.UserNotFoundException;
 import com.ganesh.security.models.token.Token;
 import com.ganesh.security.models.token.TokenType;
@@ -9,23 +9,18 @@ import com.ganesh.security.models.user.User;
 import com.ganesh.security.payload.request.AuthenticationRequest;
 import com.ganesh.security.payload.request.RegisterRequest;
 import com.ganesh.security.payload.response.AuthenticationResponse;
-import com.ganesh.security.repo.TokenRepository;
-import com.ganesh.security.repo.UserRepository;
+import com.ganesh.security.repositorys.TokenRepository;
+import com.ganesh.security.repositorys.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +34,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         if (repository.findByEmail(request.getEmail()).isPresent())
-            throw new DuplicateEmailException("Email already exists");
+            throw new UserAlreadyExistsException("Email already exists");
 
         var user = User.builder()
                 .firstname(request.getFirstname())
@@ -56,15 +51,6 @@ public class AuthenticationService {
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
-    }
-
-    public ResponseEntity<?> handleValidationErrors(BindingResult bindingResult) {
-        Map<String, String> errorMap = new HashMap<>();
-
-        for (FieldError fieldError : bindingResult.getFieldErrors())
-            errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
-
-        return ResponseEntity.badRequest().body(errorMap);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
